@@ -1,0 +1,75 @@
+<html>
+<head>
+     <meta charset="UTF-8">
+     <link rel="stylesheet" href="custom.css">
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+     <title>My Contact Book</title>
+</head>
+    
+<body id="body-home">
+    
+      <div class="form">
+        
+                <h1 class="animate__animated animate__swing animate__delay-3s"><img src="images/telephone.png" width="150" height="150">My Contact Book</h1><br/>    
+    
+    <form id="editForm" name="Form1" action="mypage.asp" method="get">
+        <label for="firstname">First Name</label>
+        <input type="text" name="firstname" id="firstname"><br/><br/>
+         <label for="lastname">Last Name</label>
+        <input type="text" name="lastname" id="lastname"><br/><br/>
+         <label for="mobile">Mobile</label>
+        <input type="text" name="mobile" id="mobile"><br/><br/>
+         <label for="email">Email</label>
+        <input type="text" name="email" id="email"><br/><br/>
+         <label for="avatar">Select a File</label><br/>
+        <input type="file" name="avatar" id="avatar"><br/><br/>
+        <button type="submit" class="search-btn"  id="submitForm">Submit</button><button type="button" id="homeLink" class="search-btn">Home</button>
+    </form></div>
+ 
+    
+    <script src="config.js"></script>
+    
+    <script>
+        document.getElementById("submitForm").addEventListener('click', submitForm);
+         document.getElementById("homeLink").addEventListener('click', homeLink);
+        
+        function submitForm(e){
+            e.preventDefault();
+            
+            const form = new FormData(document.querySelector('#editForm'));
+            form.append('apiKey', apiKey);
+            
+            fetch(rootPath+'controller/insert-contact/',{
+                method:'POST',
+                headers: {'Accept': 'application/json, *.*'},
+                body: form
+            })
+            
+            .then(function(response){
+                return response.text();
+            })
+            
+            .then(function(data){
+                if(data == "1"){
+                    alert("Contact added.");
+                    homeLink();
+                }else{
+                    alert(data);
+                    homeLink();
+                }
+            })
+            
+        }
+        
+            function homeLink(){
+                window.open("index.html", "_self");
+            }
+        
+    </script>
+                
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    
+    </body>
+</html>

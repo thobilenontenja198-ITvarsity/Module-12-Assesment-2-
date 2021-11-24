@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="custom.css">
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <title>My Contact Book</title>
+    </head>
+    
+    <body onload="fetchContacts()" id="body-home">
+        
+        <div class="header">
+            
+            <form>
+                <h1 class="animate__animated animate__swing animate__delay-3s"><img src="images/telephone.png" width="150" height="150">My Contact Book</h1><br/>
+                <div class="form-box">
+                <input type="text" class="search-field length" placeholder="Search Contacts">
+                    <button class="search-btn" type="button">Submit Search</button>
+                </div><br/>
+       
+        <div id="table">Contacts Loading....</div><br/>
+        <button id="refresh" type="button" class="search-btn">Refresh</button>
+        <button id="addContact" type="button" class="search-btn">Add Contact</button>
+        
+    <script src="config.js"></script>
+    <script>
+        
+        document.getElementById("refresh").addEventListener('click', fetchContacts);
+        document.getElementById("addContact").addEventListener('click', addContact);
+        
+        function fetchContacts(){
+            fetch(rootPath + "controller/get-contacts/")
+            .then(function (response){
+                return response.json();
+            })
+            
+            .then (function(data){
+                displayOutput(data);
+            })
+        }
+        
+        function displayOutput(data){
+            output = "<table>";
+            
+            for (a in data){
+                output +=`
+                         <tr onclick="editContact(${data[a].id})">
+                            <td><img src="${rootPath}controller/uploads/${data[a].avatar}" width="40"/></td>
+                            <td><h5>${data[a].firstname}</h5></td>
+                            <td><h5>${data[a].lastname}</h5></td>
+                        </tr>                     
+                `
+            }
+            output += "</table>";
+            document.getElementById("table").innerHTML = output;
+        }
+        
+        function addContact(){
+            window.open("add-contact.html", "_self");
+        }
+        
+        function editContact(id){
+             window.open("edit-contact.html?id=" + id, "_self");
+        }
+        
+        </script>
+        
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+            
+       </form></div>
+        
+    </body>
+
+</html>
